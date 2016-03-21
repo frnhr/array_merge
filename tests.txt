@@ -71,34 +71,38 @@ Run time for list_merge: ...
 >>> for i in range(len(result) - 1):
 ...     assert result[i] <= result[i + 1], "Items: {}, {}".format(result[i], result[i+1])
 
->>> l1 = [2, 3, 5, 6, 8, 9, 9, 9, 10, 11, 13, 15, ]
->>> l2 = [1, 2, 3, 10, 100]
+
+
+
+
+>>> l1 = iter([2, 3, 5, 6, 8, 9, 9, 9, 10, 11, 13, 15, ])
+>>> l2 = iter([1, 2, 3, 10, 100])
 >>> merge_iterables(l1, l2)  #doctest:+ELLIPSIS
 <generator ...>
 >>> list(merge_iterables(l1, l2))
 [1, 2, 2, 3, 3, 5, 6, 8, 9, 9, 9, 10, 10, 11, 13, 15, 100]
->>> list(merge_iterables([], [1, 2]))
+>>> list(merge_iterables(iter([]), iter([1, 2])))
 [1, 2]
->>> list(merge_iterables([1], []))
+>>> list(merge_iterables(iter([1]), iter([])))
 [1]
->>> list(merge_iterables([1], [1]))
+>>> list(merge_iterables(iter([1]), iter([1])))
 [1, 1]
->>> list(merge_iterables([], [], [], []))
+>>> list(merge_iterables(iter([]), iter([]), iter([]), iter([])))
 []
->>> list(merge_iterables([], [2], [4], []))
+>>> list(merge_iterables(iter([]), iter([2]), iter([4]), iter([])))
 [2, 4]
->>> list(merge_iterables([], [], [], [0]))
+>>> list(merge_iterables(iter([]), iter([]), iter([]), iter([0])))
 [0]
->>> list(merge_iterables([4, 5]))
+>>> list(merge_iterables(iter([4, 5])))
 [4, 5]
->>> list(merge_iterables([]))
+>>> list(merge_iterables(iter([])))
 []
 >>> list(merge_iterables())
 []
 >>> import random, time
->>> huge1 = sorted([random.randrange(100000000) for _ in range(1000000)])
->>> huge2 = sorted([random.randrange(100000000) for _ in range(1000000)])
->>> huge3 = sorted([random.randrange(100000000) for _ in range(1000000)])
+>>> huge1 = iter(sorted([random.randrange(100000000) for _ in range(1000000)]))
+>>> huge2 = iter(sorted([random.randrange(100000000) for _ in range(1000000)]))
+>>> huge3 = iter(sorted([random.randrange(100000000) for _ in range(1000000)]))
 >>> t0 = time.time()
 >>> result = merge_iterables(huge1, huge2, huge3)
 >>> t1 = time.time()
