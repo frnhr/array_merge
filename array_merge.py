@@ -20,6 +20,12 @@ def list_merge(*lists):
     [2, 4]
     >>> list_merge([], [], [], [0])
     [0]
+    >>> list_merge([4, 5])
+    [4, 5]
+    >>> list_merge([])
+    []
+    >>> list_merge()
+    []
     >>> import random, time
     >>> huge1 = sorted([random.randrange(100000000) for _ in range(1000000)])
     >>> huge2 = sorted([random.randrange(100000000) for _ in range(1000000)])
