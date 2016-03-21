@@ -17,21 +17,26 @@ def list_merge(list1, list2):
     >>> list_merge([1], [1])
     [1, 1]
     """
-    i, j = 0, 0
+    counters = [0, 0]
+    lists = (list1, list2)
     result = []
     total = len(list1) + len(list2)
-    while i + j < total:
-        if i >= len(list1):
-            result.append(list2[j])
-            j += 1
-        elif j >= len(list2):
-            result.append(list1[i])
-            i += 1
+    while sum(counters) < total:
+        if counters[0] >= len(lists[0]):
+            # nothing left in list 0, use 1:
+            next_from = 1
+        elif counters[1] >= len(lists[1]):
+            # nothing left in list 1, use 0:
+            next_from = 0
         else:
-            if list1[i] <= list2[j]:
-                result.append(list1[i])
-                i += 1
+            # both lists have more elements, pick minimum:
+            if lists[0][counters[0]] <= lists[1][counters[1]]:
+                next_from = 0
             else:
-                result.append(list2[j])
-                j += 1
+                next_from = 1
+        # append minimum to result:
+        result.append(lists[next_from][counters[next_from]])
+        # increase counter:
+        counters[next_from] += 1
+        # all done:
     return result
