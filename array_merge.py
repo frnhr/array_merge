@@ -36,7 +36,8 @@ def list_merge(*lists):
             else:
                 # this is second+ non-exhausted list,
                 # compare and take if smaller:
-                if lists[list_i][counters[list_i]] < lists[next_from][counters[next_from]]:
+                if (lists[list_i][counters[list_i]] <
+                        lists[next_from][counters[next_from]]):
                     next_from = list_i
         # we have a decision which list will give next item
         # (only last run will have `next_from` set to `None`)
@@ -74,36 +75,38 @@ def merge_iterables(*iterables):
     Tests:
     >>> l1 = iter(range(8, 12))  # generator: [8, 9, 10, 11]
     >>> l2 = iter(range(0, 21, 10))  # generator: [0, 10, 20]
-    >>> merge_iterables(l1, l2)  #doctest:+ELLIPSIS
-    <generator ...>
-    >>> list(_)
+    >>> result = merge_iterables(l1, l2)
+    >>> result  #doctest:+ELLIPSIS
+    <generator object merge_iterables at ...>
+    >>> list(result)
     [0, 8, 9, 10, 10, 11, 20]
     >>> list(merge_iterables(iter([]), iter([1, 2])))
     [1, 2]
     >>> list(merge_iterables())
     []
     """
-    EMPTY = object()
-    STOPPED = object()
-    next_items = [EMPTY] * len(iterables)
+    empty = object()
+    stopped = object()
+    next_items = [empty] * len(iterables)
     while True:
         for i, iterable in enumerate(iterables):
-            if next_items[i] is EMPTY:
+            if next_items[i] is empty:
                 try:
                     next_items[i] = next(iterable)
                 except StopIteration:
-                   next_items[i] = STOPPED
+                    next_items[i] = stopped
         try:
-            min_item = min(filter(lambda i: i is not STOPPED,
+            min_item = min(filter(lambda x: x is not stopped,
                                   next_items))
-        except:
+        except ValueError:
             return  # all next_items are STOPPED, we are done
 
         min_index = next_items.index(min_item)
-        next_items[min_index] = EMPTY
+        next_items[min_index] = empty
         yield min_item
 
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testfile("tests.txt", globs=locals(), verbose=True)
