@@ -8,35 +8,10 @@ def list_merge(*lists):
     >>> l2 = [1, 2, 3, 10, 100]
     >>> list_merge(l1, l2)
     [1, 2, 2, 3, 3, 5, 6, 8, 9, 9, 9, 10, 10, 11, 13, 15, 100]
-    >>> list_merge([], [1, 2])
-    [1, 2]
-    >>> list_merge([1], [])
-    [1]
-    >>> list_merge([1], [1])
-    [1, 1]
-    >>> list_merge([], [], [], [])
-    []
-    >>> list_merge([], [2], [4], [])
-    [2, 4]
-    >>> list_merge([], [], [], [0])
-    [0]
-    >>> list_merge([4, 5])
-    [4, 5]
-    >>> list_merge([])
-    []
+    >>> list_merge([], [1, 2], [], [-1])
+    [-1, 1, 2]
     >>> list_merge()
     []
-    >>> import random, time
-    >>> huge1 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> huge2 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> huge3 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> t0 = time.time()
-    >>> result = list_merge(huge1, huge2, huge3)
-    >>> t1 = time.time()
-    >>> print("Run time for list_merge: {}".format(t1 - t0))  #doctest:+ELLIPSIS
-    Run time for list_merge: ...
-    >>> for i in range(len(result) - 1):
-    ...     assert result[i] <= result[i + 1], "Items: {}, {}".format(result[i], result[i+1])
     """
     counters = [0] * len(lists)
     result = []
@@ -76,34 +51,8 @@ def list_chain_and_sort(*lists):
     [1, 2, 2, 3, 3, 5, 6, 8, 9, 9, 9, 10, 10, 11, 13, 15, 100]
     >>> list_chain_and_sort([], [1, 2])
     [1, 2]
-    >>> list_chain_and_sort([1], [])
-    [1]
-    >>> list_chain_and_sort([1], [1])
-    [1, 1]
-    >>> list_chain_and_sort([], [], [], [])
-    []
-    >>> list_chain_and_sort([], [2], [4], [])
-    [2, 4]
-    >>> list_chain_and_sort([], [], [], [0])
-    [0]
-    >>> list_chain_and_sort([4, 5])
-    [4, 5]
-    >>> list_chain_and_sort([])
-    []
     >>> list_chain_and_sort()
     []
-    >>> import random, time
-    >>> huge1 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> huge2 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> huge3 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> t0 = time.time()
-    >>> result = list_chain_and_sort(huge1, huge2, huge3)
-    >>> t1 = time.time()
-    >>> assert t1 - t0 < 1, "Too slow"
-    >>> print("Run time for list_merge: {}".format(t1 - t0))  #doctest:+ELLIPSIS
-    Run time for list_merge: ...
-    >>> for i in range(len(result) - 1):
-    ...     assert result[i] <= result[i + 1], "Items: {}, {}".format(result[i], result[i+1])
     """
     from itertools import chain
     return sorted(chain(*lists))
@@ -122,35 +71,8 @@ def merge_iterables(*lists):
     [1, 2, 2, 3, 3, 5, 6, 8, 9, 9, 9, 10, 10, 11, 13, 15, 100]
     >>> list(merge_iterables([], [1, 2]))
     [1, 2]
-    >>> list(merge_iterables([1], []))
-    [1]
-    >>> list(merge_iterables([1], [1]))
-    [1, 1]
-    >>> list(merge_iterables([], [], [], []))
-    []
-    >>> list(merge_iterables([], [2], [4], []))
-    [2, 4]
-    >>> list(merge_iterables([], [], [], [0]))
-    [0]
-    >>> list(merge_iterables([4, 5]))
-    [4, 5]
-    >>> list(merge_iterables([]))
-    []
     >>> list(merge_iterables())
     []
-    >>> import random, time
-    >>> huge1 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> huge2 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> huge3 = sorted([random.randrange(100000000) for _ in range(1000000)])
-    >>> t0 = time.time()
-    >>> result = merge_iterables(huge1, huge2, huge3)
-    >>> t1 = time.time()
-    >>> last_item = next(result)
-    >>> print("Run time for list_merge: {}".format(t1 - t0))  #doctest:+ELLIPSIS
-    Run time for list_merge: ...
-    >>> for item in result:
-    ...     assert last_item <= item, "Items: {}, {}".format(result[i], result[i+1])
-    ...     last_item = item
     """
     counters = [0] * len(lists)
     next_from = True
@@ -174,3 +96,8 @@ def merge_iterables(*lists):
             yield lists[next_from][counters[next_from]]
             # increase counter:
             counters[next_from] += 1
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testfile("tests.txt", globs=locals(), verbose=True)
