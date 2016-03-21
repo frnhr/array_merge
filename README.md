@@ -11,6 +11,11 @@ But there are other iterable things in Python that are not list
 (because if it quacks like a duck...) so another way to translate "array" to 
 Python is to say "iterable".
 
+Well, there is https://docs.python.org/3/library/array.html and also 
+http://docs.scipy.org/doc/numpy-1.10.0/reference/generated/numpy.array.html
+but those are very specialized things, so here we will ignore them.
+
+
 ## Merge arrays
 
 Task: make a function that accepts N sorted arrays returns a new sorted array 
@@ -115,3 +120,9 @@ the benefits of generators since the entire list is already in memory.
 The result will still be a generator, of course, and if used correctly,
 can be memory-efficient (e.g. if not cast to list with 
 `list(resulting_generator)`).
+
+
+# 2? 3? No `six`?
+
+No need for `six`, this is very simple code and runs in python 2 and 3. Tested
+on 2.7.11 and 3.4.4.
